@@ -71,7 +71,7 @@ class Sampler(nn.Module):
         logits: torch.Tensor,
         sampling_metadata: SamplingMetadata,
         q: torch.Tensor,
-        exp_event: torch.nu.Event,
+        exp_event: torch.npu.Event,
     ) -> SamplerOutput:
         # NOTE(woosuk): Use the original logits (before any penalties or
         # temperature scaling) for the top-k logprobs.
@@ -146,7 +146,7 @@ class Sampler(nn.Module):
         logits: torch.Tensor,
         sampling_metadata: SamplingMetadata,
         q: torch.Tensor,
-        exp_event: torch.nu.Event,
+        exp_event: torch.npu.Event,
     ) -> tuple[torch.Tensor, Optional[torch.Tensor]]:
         """Sample logits based on sampling metadata.
 

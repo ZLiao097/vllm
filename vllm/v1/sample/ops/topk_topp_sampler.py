@@ -233,7 +233,7 @@ def random_sample(
     probs: torch.Tensor,
     generators: dict[int, torch.Generator],
     q: torch.Tensor,
-    exp_event: torch.nu.Event,
+    exp_event: torch.npu.Event,
 ) -> torch.Tensor:
     """Randomly sample from the probabilities.
 
