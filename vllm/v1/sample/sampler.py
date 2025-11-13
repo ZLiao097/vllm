@@ -70,6 +70,8 @@ class Sampler(nn.Module):
         self,
         logits: torch.Tensor,
         sampling_metadata: SamplingMetadata,
+        q: torch.Tensor,
+        exp_event: torch.nu.Event,
     ) -> SamplerOutput:
         # NOTE(woosuk): Use the original logits (before any penalties or
         # temperature scaling) for the top-k logprobs.
@@ -97,7 +99,7 @@ class Sampler(nn.Module):
         logits = self.apply_penalties(logits, sampling_metadata)
 
         # Sample the next token.
-        sampled, processed_logprobs = self.sample(logits, sampling_metadata)
+        sampled, processed_logprobs = self.sample(logits, sampling_metadata, q, exp_event)
         if processed_logprobs is not None:
             raw_logprobs = processed_logprobs
         # Convert sampled token ids to int64 (long) type to ensure compatibility
@@ -143,6 +145,8 @@ class Sampler(nn.Module):
         self,
         logits: torch.Tensor,
         sampling_metadata: SamplingMetadata,
+        q: torch.Tensor,
+        exp_event: torch.nu.Event,
     ) -> tuple[torch.Tensor, Optional[torch.Tensor]]:
         """Sample logits based on sampling metadata.
 
@@ -182,6 +186,8 @@ class Sampler(nn.Module):
             sampling_metadata.generators,
             sampling_metadata.top_k,
             sampling_metadata.top_p,
+            q,
+            exp_event
         )
 
         if greedy_sampled is None:
